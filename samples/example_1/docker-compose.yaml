@@ -1,12 +1,19 @@
 name: containarization-demo-example-i 
 services:
-  app:
-    image: nginx:latest
-    volumes:
-      - logs:/var/log/nginx
+  react-app:
+    image:  alexjoy1992/demo_react_app:v2
     ports:
-      - "8080:80"
-    command: /bin/sh -c "touch /var/log/nginx/access.log && tail -F /var/log/nginx/access.log"
+      - "8080:5173"
+  
+  nginx-app:
+    image:  nginx:latest
+    ports:
+      - "8081:80"
 
-volumes:
-  logs:
+  whoami:
+    image: traefik/whoami
+    container_name: whoami-server
+    environment:
+      - WHOAMI_PORT_NUMBER=8082
+    ports:
+      - 8082:8082

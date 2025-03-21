@@ -1,0 +1,9 @@
+app:
+  name: MyApp
+  environment: production
+  log_level: info
+database:
+  host: db
+  port: 5432
+  user: myuser
+  dbname: mydb

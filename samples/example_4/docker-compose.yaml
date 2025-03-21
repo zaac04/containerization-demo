@@ -1,31 +1,36 @@
 services:
-  shorten-svc:
-    build: ../../apps/url-shortner/shorten-svc
+  app:
+    image: nginx:latest
     ports:
-      - "3000:3000"
-    environment:
-      - REDIS_HOST=redis
-      - REDIRECT_SVC=http://localhost:90
+      - "8080:8080"
+    configs:
+      - source: app_config
+        target: /app/config.yml
+    secrets:
+      - source: db_pass
+        target: /app/secrets.yml
     depends_on:
-      - redis
-
-  redirect-svc:
-    build: ../../apps/url-shortner/redirect-svc
-    ports:
-      - "90:90"
+      - db
+  db:
+    image: postgres:latest
     environment:
-      - REDIS_HOST=redis
-      - LISTEN_PORT=90
-    depends_on:
-      - redis
-
-  redis:
-    image: "redis:latest"
-    restart: always
-    ports:
-      - ":6379"
+      - POSTGRES_USER=user
+      - POSTGRES_DB=mydb
+      - POSTGRES_PASSWORD=supersecurepassword123
     volumes:
-      - redis_data:/data
+      - db_data:/var/lib/postgresql/data
+
+configs:
+  app_config:
+    file: ./config.yml 
+
+secrets:
+  db_pass:
+    file: ./db_password.txt 
 
 volumes:
-  redis_data:
+  db_data:
+
+networks:
+  containerization_demo:
+    external: true

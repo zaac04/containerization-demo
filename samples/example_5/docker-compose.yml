@@ -1,0 +1,13 @@
+services:
+  alpine:
+    image: alpine
+    container_name: alpine-server
+    command: ["sh", "-c", "apk add --no-cache netcat-openbsd && nc -lk -p 1234"]
+
+  busybox:
+    image: busybox
+    container_name: busybox-client
+    stdin_open: true
+    entrypoint: ["sh", "-c", "while true; do nc alpine-server 1234 < /dev/stdin; done"]
+    depends_on:
+      - alpine
