@@ -1,6 +1,10 @@
 services:
+  frontend-svc:
+    build: ../../apps/url-shortner/frontend/
+    ports:
+      - "5173:5173"    
   shorten-svc:
-    build: ../../apps/url-shortner/shorten-svc
+    build: ../../apps/url-shortner/backend/shorten-svc
     ports:
       - "3000:3000"
     environment:
@@ -10,7 +14,7 @@ services:
       - redis
 
   redirect-svc:
-    build: ../../apps/url-shortner/redirect-svc
+    build: ../../apps/url-shortner/backend/redirect-svc
     ports:
       - "80:80"
     environment:
