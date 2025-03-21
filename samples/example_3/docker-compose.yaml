@@ -1,50 +1,16 @@
 name: containarization-demo-example-iii
-
 services:
-  app:
-    image: nginx:latest
-    ports:
-      - "8080:8080"
+  react-app:
+    image:  alexjoy1992/demo_react_app:v2
+    network_mode: host
+
+  nginx-app:
+    image:  nginx:latest
+    network_mode: host
+
+  whoami:
+    image: traefik/whoami
+    container_name: whoami-server
     environment:
-      - APP_ENV=production
-    env_file: 
-      - .env
-    volumes:
-      - app_data:/app/data
-    networks:
-      - app_network
-    depends_on:
-      - db
-    restart: always
-    configs:
-      - source: app_config
-        target: /app/config.yml
-    secrets:
-      - db_password
-
-  db:
-    image: postgres:latest
-    environment:
-      - POSTGRES_USER=user
-      - POSTGRES_DB=mydb
-    secrets:
-      - db_password
-    volumes:
-      - db_data:/var/lib/postgresql/data
-    networks:
-      - app_network
-
-volumes:
-  app_data:
-  db_data:
-
-networks:
-  app_network:
-
-configs:
-  app_config:
-    file: ./config.yml  # External configuration file
-
-secrets:
-  db_password:
-    file: ./db_password.txt  # Secure storage for database password
+      - WHOAMI_PORT_NUMBER=8082
+    network_mode: host

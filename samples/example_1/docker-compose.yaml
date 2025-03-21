@@ -1,14 +1,13 @@
-name: containarization-demo-example-i 
 services:
   react-app:
     image:  alexjoy1992/demo_react_app:v2
     ports:
-      - "8080:5173"
+      - 8080:5173
   
   nginx-app:
     image:  nginx:latest
     ports:
-      - "8081:80"
+      - 8081:80
 
   whoami:
     image: traefik/whoami
