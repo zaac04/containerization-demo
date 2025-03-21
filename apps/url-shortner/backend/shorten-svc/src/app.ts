@@ -3,9 +3,20 @@ import express, { Request, Response } from "express";
 import { ShortenUrlBody } from "./types/types";
 import { redis } from "./redis/conn";
 import { nanoid } from "nanoid";
+import cors from "cors";
 
 const app = express();
 app.use(express.json());
+
+const corsOptions = {
+    origin: "*", // Allow requests only from these origins
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true, // Allow cookies, if your application uses them
+    optionsSuccessStatus: 204, 
+    // headers: 'Content-Type, Authorization, Content-Length, X-Requested-With',
+};
+
+app.use(cors(corsOptions))
 
 
 const port = process.env.PORT || 3000;
