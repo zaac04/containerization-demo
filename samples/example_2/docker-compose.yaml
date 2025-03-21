@@ -1,0 +1,42 @@
+name: containarization-demo-example-ii 
+
+services:
+  app:
+    image: nginx:latest
+    ports:
+      - "8080:8080"
+    environment:
+      - APP_ENV=production
+    env_file: 
+      - .env
+    volumes:
+      - app_data:/app/data
+    networks:
+      - app_network
+    depends_on:
+      - db
+    restart: always
+    configs:
+      - source: app_config
+        target: /app/config.yml
+    secrets:
+      - db_password
+
+  db:
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_DB=mydb
+    secrets:
+      - db_password
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - app_network
+
+volumes:
+  app_data:
+  db_data:
+
+networks:
+  app_network:

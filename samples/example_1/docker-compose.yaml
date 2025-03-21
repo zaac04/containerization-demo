@@ -1,0 +1,12 @@
+name: containarization-demo-example-i 
+services:
+  app:
+    image: nginx:latest
+    volumes:
+      - logs:/var/log/nginx
+    ports:
+      - "8080:80"
+    command: /bin/sh -c "touch /var/log/nginx/access.log && tail -F /var/log/nginx/access.log"
+
+volumes:
+  logs:
