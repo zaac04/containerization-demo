@@ -40,6 +40,24 @@ app.post("/shorten", (req: Request<ShortenUrlBody>, res: Response) => {
 });
 
 
+app.get("/links", async (req: Request<ShortenUrlBody>, res: Response) => {
+    const redirect_endpoint = process.env.REDIRECT_SVC || "http://localhost:3001"
+    const values:string[]=[] 
+    try {
+        const keys = await redis.keys("*");
+        console.log("Keys in Redis:", keys);
+        keys.map((key,index)=>{
+            const cleanUrl = new URL(key, redirect_endpoint).toString();
+            values.push(cleanUrl)
+        })
+    } catch (error) {
+        res.json("Error fetching keys");
+    } 
+    res.json({ urls: values });
+});
+
+
+
 app.listen(port, () => {
     console.log(`The server is running at http://localhost:${port}`);
 });
