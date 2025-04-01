@@ -8,6 +8,6 @@ services:
     image: busybox
     container_name: sender
     stdin_open: true
-    entrypoint: ["sh", "-c", "while true; do nc alpine-server 1234 < /dev/stdin; done"]
+    entrypoint: ["sh", "-c", "while true; do nc reciever  1234 < /dev/stdin; done"]
     depends_on:
       - alpine
