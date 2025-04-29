@@ -1,0 +1,15 @@
+services:
+
+  writer:
+    build: ../../apps/writer
+    restart: always
+    tmpfs:
+      - /app/tmp
+
+  redis:
+    image: "redis:latest"
+    restart: always
+    ports:
+      - ":6379"
+    tmpfs:
+      - /data

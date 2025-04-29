@@ -1,0 +1,13 @@
+services:
+  writer:
+    build: ../../apps/writer
+    restart: always
+    volumes:
+      - ./writer-data:/app/tmp
+  redis:
+    image: "redis:latest"
+    restart: always
+    ports:
+      - ":6379"
+    volumes:
+      - ./redis_data:/data
